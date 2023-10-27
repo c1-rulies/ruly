@@ -22,11 +22,12 @@ def backward_chain(knowledge_base, output_name, post_eval_cb=None, **kwargs):
     Returns:
         Dict[str, Any]: state containing calculated values
     """
+    kb_set = knowledge_base.input_variables.union(knowledge_base.derived_variables)
     state = {
-        name: kwargs.get(name)
-        for name in knowledge_base.input_variables.union(
-            knowledge_base.derived_variables)}
-    if state[output_name] is not None:
+        name: kwargs.get(name) for name in kb_set
+    }
+
+    if state.get(output_name) is not None:
         return state
 
     fired_rules = []
